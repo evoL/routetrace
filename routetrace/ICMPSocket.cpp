@@ -11,8 +11,9 @@
 #include <sys/socket.h>
 
 ICMPSocket::ICMPSocket() {
-    handle = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
-    valid = (handle >= 0);
+    if ((handle = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0) {
+        throw SocketException("Could not create socket");
+    }
 }
 
 void ICMPSocket::send(const Packet& packet, std::string address) {

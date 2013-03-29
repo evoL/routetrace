@@ -10,13 +10,20 @@
 #define __routetrace__Socket__
 
 #include <netinet/in.h>
+#include <cstdio>
 #include <string>
+#include <stdexcept>
 #include "Packet.h"
+
+class SocketException : public std::runtime_error {
+public:
+    SocketException(std::string what): std::runtime_error(what) {}
+};
 
 // Defines a raw IPv4 socket
 class Socket {
 public:
-    Socket(): handle(0), valid(false) {}
+    Socket(): handle(0) {}
     virtual ~Socket();
     
     void setTTL(int ttl);
@@ -24,7 +31,6 @@ public:
 
 protected:
     int handle;
-    bool valid;
     
     sockaddr_in parseAddress(std::string address);
 };

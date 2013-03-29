@@ -19,7 +19,7 @@ Socket::~Socket() {
 
 void Socket::setTTL(int ttl) {
     if (setsockopt(handle, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) < 0) {
-        throw "Setting TTL failed";
+        throw SocketException("Setting TTL failed");
     }
 }
 
@@ -27,7 +27,7 @@ void Socket::send(const Packet& packet, std::string address) {
     sockaddr_in address_struct = parseAddress(address);
     
     if (sendto(handle, packet.structure(), packet.length(), 0, (sockaddr*)(&address_struct), sizeof(address_struct)) != packet.length()) {
-        throw "Could not send the packet";
+        throw SocketException("Could not send the packet");
     }
 }
 
