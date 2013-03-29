@@ -8,7 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1B41E46317060F0800935314 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E46217060F0800935314 /* main.cpp */; };
-		1B41E46517060F0800935314 /* routetrace.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B41E46417060F0800935314 /* routetrace.1 */; };
+		1B41E46D170611AA00935314 /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E46B170611AA00935314 /* Socket.cpp */; };
+		1B41E4731706386B00935314 /* ICMPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E4711706386B00935314 /* ICMPSocket.cpp */; };
+		1B41E476170639FF00935314 /* Packet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E474170639FE00935314 /* Packet.cpp */; };
+		1B41E47917063A2100935314 /* ICMPPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E47717063A2100935314 /* ICMPPacket.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,7 +21,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				1B41E46517060F0800935314 /* routetrace.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -27,7 +29,14 @@
 /* Begin PBXFileReference section */
 		1B41E45F17060F0800935314 /* routetrace */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = routetrace; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B41E46217060F0800935314 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		1B41E46417060F0800935314 /* routetrace.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = routetrace.1; sourceTree = "<group>"; };
+		1B41E46B170611AA00935314 /* Socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Socket.cpp; sourceTree = "<group>"; };
+		1B41E46C170611AA00935314 /* Socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
+		1B41E4711706386B00935314 /* ICMPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ICMPSocket.cpp; sourceTree = "<group>"; };
+		1B41E4721706386B00935314 /* ICMPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMPSocket.h; sourceTree = "<group>"; };
+		1B41E474170639FE00935314 /* Packet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Packet.cpp; sourceTree = "<group>"; };
+		1B41E475170639FE00935314 /* Packet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Packet.h; sourceTree = "<group>"; };
+		1B41E47717063A2100935314 /* ICMPPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ICMPPacket.cpp; sourceTree = "<group>"; };
+		1B41E47817063A2100935314 /* ICMPPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMPPacket.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +70,14 @@
 			isa = PBXGroup;
 			children = (
 				1B41E46217060F0800935314 /* main.cpp */,
-				1B41E46417060F0800935314 /* routetrace.1 */,
+				1B41E474170639FE00935314 /* Packet.cpp */,
+				1B41E475170639FE00935314 /* Packet.h */,
+				1B41E46B170611AA00935314 /* Socket.cpp */,
+				1B41E46C170611AA00935314 /* Socket.h */,
+				1B41E47717063A2100935314 /* ICMPPacket.cpp */,
+				1B41E47817063A2100935314 /* ICMPPacket.h */,
+				1B41E4711706386B00935314 /* ICMPSocket.cpp */,
+				1B41E4721706386B00935314 /* ICMPSocket.h */,
 			);
 			path = routetrace;
 			sourceTree = "<group>";
@@ -118,6 +134,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B41E46317060F0800935314 /* main.cpp in Sources */,
+				1B41E46D170611AA00935314 /* Socket.cpp in Sources */,
+				1B41E4731706386B00935314 /* ICMPSocket.cpp in Sources */,
+				1B41E476170639FF00935314 /* Packet.cpp in Sources */,
+				1B41E47917063A2100935314 /* ICMPPacket.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

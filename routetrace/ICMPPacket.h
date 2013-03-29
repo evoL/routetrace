@@ -15,17 +15,29 @@
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 
-enum ICMPPacketType {
-    ICMP_PACKET_ECHO
-};
-
 class ICMPPacket : public Packet {
     icmp packet;
+    
+    static int id;
+    static int sequence;
 public:
-    void type(ICMPPacketType type);
+    enum Type {
+        ICMP_PACKET_ECHO
+    };
+    enum SubType {
+        ICMP_PACKET_NORMAL
+    };
+    
+    ICMPPacket();
+    
+    void echo();
+    void type(Type type, SubType subtype = ICMP_PACKET_NORMAL);
     
     virtual inline int length() const { return 8; } // ICMP header length
     virtual inline const void* structure() const { return &packet; }
+    
+private:
+    int computeChecksum();
 };
 
 #endif /* defined(__routetrace__ICMPPacket__) */

@@ -20,7 +20,7 @@ public:
     virtual ~Socket();
     
     void setTTL(int ttl);
-    void send(const Packet& packet, std::string address);
+    virtual void send(const Packet& packet, std::string address);
 
 protected:
     int handle;
