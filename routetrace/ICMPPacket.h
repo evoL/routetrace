@@ -37,7 +37,7 @@ public:
     virtual inline const void* structure() const { return &packet; }
     
 private:
-    int computeChecksum();
+    u_short computeChecksum();
 };
 
 #endif /* defined(__routetrace__ICMPPacket__) */

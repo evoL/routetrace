@@ -39,12 +39,9 @@ void ICMPPacket::type(ICMPPacket::Type type, ICMPPacket::SubType subtype) {
 }
 
 // Based on in_cksum from ping.c of iputils-20071127
-int ICMPPacket::computeChecksum() {
-    const u_short *addr = reinterpret_cast<u_short*>(&packet);
-    register int len = 8;
-    
-    register int nleft = len;
-    const u_short *w = addr;
+u_short ICMPPacket::computeChecksum() {
+    register int nleft = 8;
+    const u_short *w = reinterpret_cast<u_short*>(&packet);
     register u_short answer;
     register int sum = 0;
     
