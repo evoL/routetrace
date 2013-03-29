@@ -13,11 +13,18 @@
 #include <cstdio>
 #include <string>
 #include <stdexcept>
+#include <errno.h>
 #include "Packet.h"
 
 class SocketException : public std::runtime_error {
+    int error_code;
 public:
-    SocketException(std::string what): std::runtime_error(what) {}
+    SocketException(std::string what): std::runtime_error(what), error_code(errno) {}
+    
+    inline int code() const { return error_code; }
+    std::string cause() const {
+        return std::string(strerror(error_code));
+    }
 };
 
 // Defines a raw IPv4 socket
