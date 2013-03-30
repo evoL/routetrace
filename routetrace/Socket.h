@@ -10,7 +10,6 @@
 #define __routetrace__Socket__
 
 #include <netinet/in.h>
-#include <cstdio>
 #include <string>
 #include <stdexcept>
 #include <errno.h>
@@ -30,7 +29,7 @@ public:
 // Defines a raw IPv4 socket
 class Socket {
 public:
-    Socket(): handle(0) {}
+    Socket();
     virtual ~Socket();
     
     void setTTL(int ttl);

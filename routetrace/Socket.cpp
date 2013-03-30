@@ -13,6 +13,8 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+Socket::Socket() {}
+
 Socket::~Socket() {
     close(handle);
 }
