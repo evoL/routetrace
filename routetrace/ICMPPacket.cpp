@@ -77,6 +77,23 @@ void ICMPPacket::type(ICMPPacket::Type type, ICMPPacket::SubType subtype) {
     packet.icmp_cksum = computeChecksum();
 }
 
+std::string ICMPPacket::humanType() {
+    switch (type()) {
+        case ICMP_TYPE_ECHO:          return "Echo";
+        case ICMP_TYPE_ECHO_REPLY:    return "Echo reply";
+        case ICMP_TYPE_TIME_EXCEEDED: return "Time exceeded";
+        default: return "Unknown";
+    }
+}
+
+std::string ICMPPacket::humanSubtype() {
+    switch (subtype()) {
+        case ICMP_SUBTYPE_NORMAL: return "Normal";
+        case ICMP_SUBTYPE_TIME_EXCEEDED_TTL: return "TTL at 0";
+        default: return "Unknown";
+    }
+}
+
 // Based on in_cksum from ping.c of iputils-20071127
 u_short ICMPPacket::computeChecksum() {
     register int nleft = 8;

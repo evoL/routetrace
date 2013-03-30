@@ -234,6 +234,7 @@
 				1B41E46A17060F0800935314 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

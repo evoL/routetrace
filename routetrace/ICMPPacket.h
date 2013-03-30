@@ -14,6 +14,7 @@
 #include <netinet/in.h>
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
+#include <string>
 
 class ICMPPacket : public Packet {
     icmp packet;
@@ -46,6 +47,9 @@ public:
     
     Type type();
     void type(Type type, SubType subtype = ICMP_SUBTYPE_NORMAL);
+    
+    std::string humanType();
+    std::string humanSubtype();
     
     virtual inline int length() const { return 8; } // ICMP header length
     virtual inline const void* structure() const { return &packet; }
