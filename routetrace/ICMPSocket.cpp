@@ -23,3 +23,11 @@ void ICMPSocket::send(const Packet& packet, std::string address) {
 void ICMPSocket::send(const ICMPPacket& packet, std::string address) {
     Socket::send(static_cast<const Packet&>(packet), address);
 }
+
+ICMPPacket ICMPSocket::receive() {
+    ssize_t length;
+    unsigned char* buffer = receiveData(&length);
+    unsigned char* dataPointer = buffer + 8;
+    
+    return ICMPPacket(*(icmp*)buffer, ICMPPacket::Data(dataPointer, dataPointer + (length - 8)));
+}

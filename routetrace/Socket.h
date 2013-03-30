@@ -10,6 +10,7 @@
 #define __routetrace__Socket__
 
 #include <netinet/in.h>
+#include <netinet/ip.h>
 #include <string>
 #include <stdexcept>
 #include <errno.h>
@@ -33,12 +34,20 @@ public:
     virtual ~Socket();
     
     void setTTL(int ttl);
+    
     virtual void send(const Packet& packet, std::string address);
+    
+    inline std::string address() { return lastAddress; }
 
 protected:
     int handle;
+    std::string lastAddress;
+    unsigned char receiveBuffer[IP_MAXPACKET+1];
     
-    sockaddr_in parseAddress(std::string address);
+    unsigned char* receiveData(ssize_t *length);
+    
+    sockaddr_in addressFromString(std::string address);
+    std::string addressToString(sockaddr_in& address);
 };
 
 

@@ -10,29 +10,67 @@
 
 #include <unistd.h>
 
-int ICMPPacket::id = getpid();
-int ICMPPacket::sequence = 0;
+#ifdef __APPLE__
+#define ICMP_TIME_EXCEEDED ICMP_TIMXCEED
+#define ICMP_EXC_TTL       ICMP_TIMXCEED_INTRANS
+#endif
+
+int ICMPPacket::ID = getpid();
+int ICMPPacket::Sequence = 0;
 
 ICMPPacket::ICMPPacket() {
-    packet.icmp_id = id;
-    packet.icmp_seq = ++sequence;
+    packet.icmp_id = ID;
+    packet.icmp_seq = ++Sequence;
 }
 
 void ICMPPacket::echo() {
-    type(ICMP_PACKET_ECHO);
+    type(ICMP_TYPE_ECHO);
+}
+
+ICMPPacket::SubType ICMPPacket::subtype() {
+    switch (packet.icmp_type) {
+        case ICMP_TIME_EXCEEDED:
+            switch (packet.icmp_code) {
+                case ICMP_EXC_TTL: return ICMP_SUBTYPE_TIME_EXCEEDED_TTL;
+                default: return ICMP_SUBTYPE_UNKNOWN;
+            }            
+        default: return ICMP_SUBTYPE_NORMAL;
+    }
+}
+
+ICMPPacket::Type ICMPPacket::type() {
+    switch (packet.icmp_type) {
+        case ICMP_ECHO: return ICMP_TYPE_ECHO;
+        case ICMP_ECHOREPLY: return ICMP_TYPE_ECHO_REPLY;
+        case ICMP_TIME_EXCEEDED: return ICMP_TYPE_TIME_EXCEEDED;
+        default: return ICMP_TYPE_UNKNOWN;
+    }
 }
 
 void ICMPPacket::type(ICMPPacket::Type type, ICMPPacket::SubType subtype) {
     switch (type) {
-    case ICMP_PACKET_ECHO:
-        packet.icmp_type = ICMP_ECHO;
-        break;
+        case ICMP_TYPE_ECHO:
+            packet.icmp_type = ICMP_ECHO;
+            break;
+        case ICMP_TYPE_ECHO_REPLY:
+            packet.icmp_type = ICMP_ECHOREPLY;
+            break;
+        case ICMP_TYPE_TIME_EXCEEDED:
+            packet.icmp_type = ICMP_TIME_EXCEEDED;
+            break;
+        default:
+            throw "Invalid ICMP type";
     }
     
     switch (subtype) {
-    case ICMP_PACKET_NORMAL:
-        packet.icmp_code = 0;
-        break;
+        case ICMP_SUBTYPE_NORMAL:
+            packet.icmp_code = 0;
+            break;
+        case ICMP_SUBTYPE_TIME_EXCEEDED_TTL:
+            packet.icmp_code = ICMP_EXC_TTL;
+            break;
+        default:
+            throw "Invalid ICMP subtype/code";
     }
     
     packet.icmp_cksum = 0;

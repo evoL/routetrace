@@ -26,14 +26,43 @@ void Socket::setTTL(int ttl) {
 }
 
 void Socket::send(const Packet& packet, std::string address) {
-    sockaddr_in address_struct = parseAddress(address);
+    sockaddr_in address_struct = addressFromString(address);
+    lastAddress = address;
     
-    if (sendto(handle, packet.structure(), packet.length(), 0, (sockaddr*)(&address_struct), sizeof(address_struct)) != packet.length()) {
+    // Make a copy of the raw header
+    unsigned char* dataPointer = (unsigned char*)(packet.structure());
+    Packet::Data data(dataPointer, dataPointer + packet.length());
+    
+    // Append the data to the header
+    data.insert(data.end(), packet.data().begin(), packet.data().end());
+    
+    if (sendto(handle, &data[0], data.size(), 0, (sockaddr*)(&address_struct), sizeof(address_struct)) != data.size()) {
         throw SocketException("Could not send the packet");
     }
 }
 
-sockaddr_in Socket::parseAddress(std::string address) {
+unsigned char* Socket::receiveData(ssize_t *length) {
+    sockaddr_in sender;
+    socklen_t senderLength = sizeof(sender);
+    unsigned char *buffer = receiveBuffer;
+    
+    ssize_t remaining = recvfrom(handle, buffer, IP_MAXPACKET, 0, (sockaddr*)(&sender), &senderLength);
+    
+    if (remaining < 0)
+        throw SocketException("Could not receive from the socket");
+    
+    lastAddress = addressToString(sender);
+    
+    // Bypass the IP packet
+    ip* ipPacket = (ip*)buffer;
+    remaining -= ipPacket->ip_hl * 4;
+    buffer += ipPacket->ip_hl * 4;
+    
+    *length = remaining;
+    return buffer;
+}
+
+sockaddr_in Socket::addressFromString(std::string address) {
     sockaddr_in result;
     memset(&result, 0, sizeof(result));
     
@@ -41,4 +70,11 @@ sockaddr_in Socket::parseAddress(std::string address) {
     inet_pton(AF_INET, address.c_str(), &result.sin_addr);
     
     return result;
+}
+
+std::string Socket::addressToString(sockaddr_in& address) {
+    char str[20];
+    inet_ntop(AF_INET, &(address.sin_addr), str, sizeof(str));
+    
+    return std::string(str);
 }

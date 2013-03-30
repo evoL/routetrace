@@ -18,6 +18,8 @@ public:
     
     virtual void send(const Packet& packet, std::string address);
     virtual void send(const ICMPPacket& packet, std::string address);
+    
+    ICMPPacket receive();
 };
 
 #endif /* defined(__routetrace__ICMPSocket__) */
