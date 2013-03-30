@@ -35,6 +35,7 @@ void ICMPPacket::type(ICMPPacket::Type type, ICMPPacket::SubType subtype) {
         break;
     }
     
+    packet.icmp_cksum = 0;
     packet.icmp_cksum = computeChecksum();
 }
 
