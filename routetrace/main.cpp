@@ -48,7 +48,8 @@ int main(int argc, const char * argv[]) {
                 
                 std::cout << "Got an ICMP packet from " << socket.address() << std::endl;
                 std::cout << "ICMP type: " << packet.humanType();
-                std::cout << ", subtype: " << packet.humanSubtype() << std::endl;
+                std::cout << ", code " << packet.subtype() << std::endl;
+                std::cout << "ID: " << packet.id() << ", sequence: " << packet.sequence() << std::endl;
                 
                 std::cout << "Payload (" << packet.data().size() << " bytes):" << std::endl;
                 

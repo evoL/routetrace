@@ -22,17 +22,8 @@ class ICMPPacket : public Packet {
     static int ID;
     static int Sequence;
 public:
-    enum Type {
-        ICMP_TYPE_ECHO,
-        ICMP_TYPE_ECHO_REPLY,
-        ICMP_TYPE_TIME_EXCEEDED,
-        ICMP_TYPE_UNKNOWN
-    };
-    enum SubType {
-        ICMP_SUBTYPE_NORMAL,
-        ICMP_SUBTYPE_TIME_EXCEEDED_TTL,
-        ICMP_SUBTYPE_UNKNOWN
-    };
+    typedef unsigned char Type;
+    typedef int SubType;
     
     ICMPPacket();
     ICMPPacket(icmp packet): packet(packet), Packet() {}
@@ -43,13 +34,12 @@ public:
     inline int id() { return packet.icmp_id; }
     inline int sequence() { return packet.icmp_seq; }
     
-    SubType subtype();
+    inline SubType subtype() { return (SubType)(packet.icmp_code); }
     
-    Type type();
-    void type(Type type, SubType subtype = ICMP_SUBTYPE_NORMAL);
+    inline Type type() { return packet.icmp_type;}
+    void type(Type type, SubType subtype = 0);
     
     std::string humanType();
-    std::string humanSubtype();
     
     virtual inline int length() const { return 8; } // ICMP header length
     virtual inline const void* structure() const { return &packet; }
