@@ -19,6 +19,11 @@ ICMPPacket::ICMPPacket() {
     packet.icmp_seq = ++Sequence;
 }
 
+ICMPPacket::ICMPPacket(int id, int seq) {
+    packet.icmp_id = id;
+    packet.icmp_seq = seq;
+}
+
 void ICMPPacket::echo() {
     type(ICMP_ECHO);
 }
