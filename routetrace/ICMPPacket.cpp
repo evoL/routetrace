@@ -11,11 +11,6 @@
 #include <unistd.h>
 #include <sstream>
 
-#ifdef __APPLE__
-#define ICMP_TIME_EXCEEDED ICMP_TIMXCEED
-#define ICMP_EXC_TTL       ICMP_TIMXCEED_INTRANS
-#endif
-
 int ICMPPacket::ID = getpid();
 int ICMPPacket::Sequence = 0;
 
@@ -46,6 +41,13 @@ std::string ICMPPacket::humanType() {
             str << "Unknown (" << (int)(packet.icmp_type) << ")";
             return str.str();
     }
+}
+
+ICMPPacket ICMPPacket::fromData(const Data& data) {
+    icmp* packet = (icmp*)&data[0];
+    unsigned char* dataPointer = (unsigned char*)&data[8];
+    
+    return ICMPPacket(*packet, Data(dataPointer, (unsigned char*)&data[data.size()]));
 }
 
 // Based on in_cksum from ping.c of iputils-20071127

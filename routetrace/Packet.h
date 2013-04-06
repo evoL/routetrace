@@ -17,6 +17,7 @@ public:
     
     Packet() {}
     Packet(Data data): rawData(data) {}
+    virtual ~Packet() {}
     
     virtual inline int length() const = 0;
     virtual const void* structure() const = 0;

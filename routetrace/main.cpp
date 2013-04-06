@@ -8,6 +8,7 @@
 
 #include "ICMPSocket.h"
 #include "ICMPPacket.h"
+#include "IPPacket.h"
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -49,7 +50,6 @@ int main(int argc, const char * argv[]) {
                 std::cout << "Got an ICMP packet from " << socket.address() << std::endl;
                 std::cout << "ICMP type: " << packet.humanType();
                 std::cout << ", code " << packet.subtype() << std::endl;
-                std::cout << "ID: " << packet.id() << ", sequence: " << packet.sequence() << std::endl;
                 
                 std::cout << "Payload (" << packet.data().size() << " bytes):" << std::endl;
                 
@@ -63,7 +63,29 @@ int main(int argc, const char * argv[]) {
                     if ((++i % 24) == 0) std::cout << std::endl;
                 }
                 
-                std::cout << std::endl << std::endl;
+                std::cout << std::endl;
+                
+                if (packet.type() == ICMP_TIME_EXCEEDED && packet.subtype() == ICMP_EXC_TTL) {
+                    std::cout << "TTL is 0, let's see what's inside..." << std::endl;
+                    
+                    IPPacket ipPacket = IPPacket::fromData(packet.data());
+                    
+                    if (ipPacket.protocol() == IPPROTO_ICMP) {
+                        std::cout << "A wild ICMP appeared!" << std::endl;
+                        ICMPPacket *insidePacket = static_cast<ICMPPacket*>(ipPacket.payload());
+                        
+                        std::cout << "ICMP type: " << insidePacket->humanType();
+                        std::cout << ", code " << insidePacket->subtype() << std::endl;
+                    } else {
+                        std::cout << "Nothing interesting :(" << std::endl;
+                    }
+                }
+                
+                else if (packet.type() == ICMP_ECHOREPLY) {
+                    std::cout << "It's an echo reply!" << std::endl;
+                }
+                
+                std::cout << std::endl;
             }
         } catch (SocketException e) {
             std::cerr << e.what() << ": " << e.cause() << std::endl;

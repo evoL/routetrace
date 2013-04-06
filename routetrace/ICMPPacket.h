@@ -16,6 +16,11 @@
 #include <netinet/ip_icmp.h>
 #include <string>
 
+#ifdef __APPLE__
+#define ICMP_TIME_EXCEEDED ICMP_TIMXCEED
+#define ICMP_EXC_TTL       ICMP_TIMXCEED_INTRANS
+#endif
+
 class ICMPPacket : public Packet {
     icmp packet;
     
@@ -44,6 +49,7 @@ public:
     virtual inline int length() const { return 8; } // ICMP header length
     virtual inline const void* structure() const { return &packet; }
     
+    static ICMPPacket fromData(const Data& data);
 private:
     u_short computeChecksum();
 };
