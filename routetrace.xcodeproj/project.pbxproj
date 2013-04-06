@@ -13,6 +13,7 @@
 		1B41E476170639FF00935314 /* Packet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E474170639FE00935314 /* Packet.cpp */; };
 		1B41E47917063A2100935314 /* ICMPPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E47717063A2100935314 /* ICMPPacket.cpp */; };
 		1B49CCC0170C7F8800863421 /* IPPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B49CCBE170C7F8800863421 /* IPPacket.cpp */; };
+		1B49CCC31710B81C00863421 /* Selector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B49CCC11710B81C00863421 /* Selector.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +41,8 @@
 		1B41E47817063A2100935314 /* ICMPPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMPPacket.h; sourceTree = "<group>"; };
 		1B49CCBE170C7F8800863421 /* IPPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IPPacket.cpp; sourceTree = "<group>"; };
 		1B49CCBF170C7F8800863421 /* IPPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPPacket.h; sourceTree = "<group>"; };
+		1B49CCC11710B81C00863421 /* Selector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Selector.cpp; sourceTree = "<group>"; };
+		1B49CCC21710B81C00863421 /* Selector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Selector.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +76,8 @@
 			isa = PBXGroup;
 			children = (
 				1B41E46217060F0800935314 /* main.cpp */,
+				1B49CCC11710B81C00863421 /* Selector.cpp */,
+				1B49CCC21710B81C00863421 /* Selector.h */,
 				1B41E474170639FE00935314 /* Packet.cpp */,
 				1B41E475170639FE00935314 /* Packet.h */,
 				1B41E46B170611AA00935314 /* Socket.cpp */,
@@ -144,6 +149,7 @@
 				1B41E476170639FF00935314 /* Packet.cpp in Sources */,
 				1B41E47917063A2100935314 /* ICMPPacket.cpp in Sources */,
 				1B49CCC0170C7F8800863421 /* IPPacket.cpp in Sources */,
+				1B49CCC31710B81C00863421 /* Selector.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

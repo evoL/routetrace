@@ -11,7 +11,7 @@
 #include <sys/socket.h>
 
 ICMPSocket::ICMPSocket() {
-    if ((handle = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0) {
+    if ((fd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0) {
         throw SocketException("Could not create socket");
     }
 }

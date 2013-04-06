@@ -36,11 +36,13 @@ public:
     void setTTL(int ttl);
     
     virtual void send(const Packet& packet, std::string address);
+    void bind(int port);
     
-    inline std::string address() { return lastAddress; }
+    inline std::string address() const { return lastAddress; }
+    inline int handle() const { return fd; }
 
 protected:
-    int handle;
+    int fd;
     std::string lastAddress;
     unsigned char receiveBuffer[IP_MAXPACKET+1];
     

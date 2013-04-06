@@ -16,11 +16,11 @@
 Socket::Socket() {}
 
 Socket::~Socket() {
-    close(handle);
+    close(fd);
 }
 
 void Socket::setTTL(int ttl) {
-    if (setsockopt(handle, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) < 0) {
+    if (setsockopt(fd, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) < 0) {
         throw SocketException("Setting TTL failed");
     }
 }
@@ -36,8 +36,20 @@ void Socket::send(const Packet& packet, std::string address) {
     // Append the data to the header
     data.insert(data.end(), packet.data().begin(), packet.data().end());
     
-    if (sendto(handle, &data[0], data.size(), 0, (sockaddr*)(&address_struct), sizeof(address_struct)) != data.size()) {
+    if (sendto(fd, &data[0], data.size(), 0, (sockaddr*)(&address_struct), sizeof(address_struct)) != data.size()) {
         throw SocketException("Could not send the packet");
+    }
+}
+
+void Socket::bind(int port) {
+    sockaddr_in address;
+    
+    address.sin_family = AF_INET;
+    address.sin_port = htons(port);
+    address.sin_addr.s_addr = INADDR_ANY;
+    
+    if (::bind(fd, (sockaddr*)&address, sizeof(address)) < 0) {
+        throw SocketException("Could not bind socket");
     }
 }
 
@@ -46,7 +58,7 @@ unsigned char* Socket::receiveData(ssize_t *length) {
     socklen_t senderLength = sizeof(sender);
     unsigned char *buffer = receiveBuffer;
     
-    ssize_t remaining = recvfrom(handle, buffer, IP_MAXPACKET, 0, (sockaddr*)(&sender), &senderLength);
+    ssize_t remaining = recvfrom(fd, buffer, IP_MAXPACKET, 0, (sockaddr*)(&sender), &senderLength);
     
     if (remaining < 0)
         throw SocketException("Could not receive from the socket");
