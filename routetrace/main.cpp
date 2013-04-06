@@ -12,6 +12,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <unistd.h>
 
 int main(int argc, const char * argv[]) {
     if (argc == 1) {
@@ -24,6 +25,8 @@ int main(int argc, const char * argv[]) {
     if (mode == "send") {
         
         try {
+            std::cout << "PID: " << getpid() << std::endl;
+            
             ICMPSocket socket;
             ICMPPacket packet;
             
@@ -50,6 +53,7 @@ int main(int argc, const char * argv[]) {
                 std::cout << "Got an ICMP packet from " << socket.address() << std::endl;
                 std::cout << "ICMP type: " << packet.humanType();
                 std::cout << ", code " << packet.subtype() << std::endl;
+                std::cout << "ID " << packet.id() << ", seq " << packet.sequence() << std::endl;
                 
                 std::cout << "Payload (" << packet.data().size() << " bytes):" << std::endl;
                 
@@ -63,6 +67,7 @@ int main(int argc, const char * argv[]) {
                     if ((++i % 24) == 0) std::cout << std::endl;
                 }
                 
+                std::cout << std::resetiosflags(std::ios::basefield);
                 std::cout << std::endl;
                 
                 if (packet.type() == ICMP_TIME_EXCEEDED && packet.subtype() == ICMP_EXC_TTL) {
@@ -76,6 +81,7 @@ int main(int argc, const char * argv[]) {
                         
                         std::cout << "ICMP type: " << insidePacket->humanType();
                         std::cout << ", code " << insidePacket->subtype() << std::endl;
+                        std::cout << "ID " << insidePacket->id() << ", seq " << insidePacket->sequence() << std::endl;
                     } else {
                         std::cout << "Nothing interesting :(" << std::endl;
                     }
