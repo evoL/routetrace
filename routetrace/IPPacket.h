@@ -1,10 +1,4 @@
-//
-//  IPPacket.h
-//  routetrace
-//
-//  Created by Rafał Hirsz on 03.04.2013.
-//  Copyright (c) 2013 Rafał Hirsz. All rights reserved.
-//
+// Rafał Hirsz, nr 247955
 
 #ifndef __routetrace__IPPacket__
 #define __routetrace__IPPacket__

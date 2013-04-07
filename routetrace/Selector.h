@@ -1,10 +1,4 @@
-//
-//  Selector.h
-//  routetrace
-//
-//  Created by Rafał Hirsz on 06.04.2013.
-//  Copyright (c) 2013 Rafał Hirsz. All rights reserved.
-//
+// Rafał Hirsz, nr 247955
 
 #ifndef __routetrace__Selector__
 #define __routetrace__Selector__

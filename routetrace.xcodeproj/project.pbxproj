@@ -10,7 +10,6 @@
 		1B41E46317060F0800935314 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E46217060F0800935314 /* main.cpp */; };
 		1B41E46D170611AA00935314 /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E46B170611AA00935314 /* Socket.cpp */; };
 		1B41E4731706386B00935314 /* ICMPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E4711706386B00935314 /* ICMPSocket.cpp */; };
-		1B41E476170639FF00935314 /* Packet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E474170639FE00935314 /* Packet.cpp */; };
 		1B41E47917063A2100935314 /* ICMPPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E47717063A2100935314 /* ICMPPacket.cpp */; };
 		1B49CCC0170C7F8800863421 /* IPPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B49CCBE170C7F8800863421 /* IPPacket.cpp */; };
 		1B49CCC31710B81C00863421 /* Selector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B49CCC11710B81C00863421 /* Selector.cpp */; };
@@ -35,7 +34,6 @@
 		1B41E46C170611AA00935314 /* Socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
 		1B41E4711706386B00935314 /* ICMPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ICMPSocket.cpp; sourceTree = "<group>"; };
 		1B41E4721706386B00935314 /* ICMPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMPSocket.h; sourceTree = "<group>"; };
-		1B41E474170639FE00935314 /* Packet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Packet.cpp; sourceTree = "<group>"; };
 		1B41E475170639FE00935314 /* Packet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Packet.h; sourceTree = "<group>"; };
 		1B41E47717063A2100935314 /* ICMPPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ICMPPacket.cpp; sourceTree = "<group>"; };
 		1B41E47817063A2100935314 /* ICMPPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMPPacket.h; sourceTree = "<group>"; };
@@ -78,7 +76,6 @@
 				1B41E46217060F0800935314 /* main.cpp */,
 				1B49CCC11710B81C00863421 /* Selector.cpp */,
 				1B49CCC21710B81C00863421 /* Selector.h */,
-				1B41E474170639FE00935314 /* Packet.cpp */,
 				1B41E475170639FE00935314 /* Packet.h */,
 				1B41E46B170611AA00935314 /* Socket.cpp */,
 				1B41E46C170611AA00935314 /* Socket.h */,
@@ -146,7 +143,6 @@
 				1B41E46317060F0800935314 /* main.cpp in Sources */,
 				1B41E46D170611AA00935314 /* Socket.cpp in Sources */,
 				1B41E4731706386B00935314 /* ICMPSocket.cpp in Sources */,
-				1B41E476170639FF00935314 /* Packet.cpp in Sources */,
 				1B41E47917063A2100935314 /* ICMPPacket.cpp in Sources */,
 				1B49CCC0170C7F8800863421 /* IPPacket.cpp in Sources */,
 				1B49CCC31710B81C00863421 /* Selector.cpp in Sources */,
