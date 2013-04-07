@@ -11,6 +11,7 @@
 #include "IPPacket.h"
 #include "Selector.h"
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <set>
@@ -18,6 +19,8 @@
 #include <sys/time.h>
 
 using namespace std;
+
+const int MAXHOPS = 30;
 
 int main(int argc, const char * argv[]) {
     if (argc == 1) {
@@ -27,8 +30,6 @@ int main(int argc, const char * argv[]) {
     
     string target_ip = argv[1];
     
-    cout.precision(4);
-    
     try {
         ICMPSocket socket;
         Selector selector;
@@ -36,25 +37,24 @@ int main(int argc, const char * argv[]) {
         
         vector<timeval> starts;
         set<string> addresses;
-        int times[90];
+        timeval start;
         float sum;
         bool isTimeout;
         
         int icmpid = getpid() & 0xffff;
         int sequence = 0;
         bool running = true;
-        timeval start;
         
-        for (int ttl = 1; running && (ttl <= 30); ttl++) {
-            cout << ttl;
+        cout << "Tracing route to " << target_ip << ", " << MAXHOPS << " hops max" << endl;
+        
+        for (int ttl = 1; running && (ttl <= MAXHOPS); ttl++) {
+            cout << setw(2) << right << ttl << "  ";
             cout.flush();
             
             // Send 3 packets
             for (int i = 0; i < 3; i++) {
                 ICMPPacket ping(icmpid, ++sequence);
                 ping.echo();
-                
-//                cout << "  >> " << icmpid << " (" << sequence << ")" << endl;
                 
                 gettimeofday(&start, NULL);
                 starts.push_back(start);
@@ -77,80 +77,68 @@ int main(int argc, const char * argv[]) {
                     gettimeofday(&end, NULL);
                     
                     int time;
-                    
-//                    cout << "  << ";
+                    int received_id, received_seq;
+                    bool received = false;
                     
                     if (packet.type() == ICMP_TIME_EXCEEDED && packet.subtype() == ICMP_EXC_TTL) {
                         IPPacket ip_packet = IPPacket::fromData(packet.data());
                         ICMPPacket *inside_packet = static_cast<ICMPPacket*>(ip_packet.payload());
                         
-                        // Check ID and sequence
-                        if ((inside_packet->id() == icmpid) && (inside_packet->sequence() > (sequence - 3)) && (inside_packet->sequence() <= sequence)) {
-                            // Calculate elapsed time
-                            start = starts[inside_packet->sequence() - 1];
-                            time = (int)((end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec));
-                            times[inside_packet->sequence() - 1] = time;
-                            
-                            sum += (float)time / 1000;
-                            
-                            // Get the address
-                            addresses.insert(socket.address());
-                        } else {
-                            // We get some weird packets.
-                            i--;
-                        }
+                        received = true;
+                        received_id = inside_packet->id();
+                        received_seq = inside_packet->sequence();
                         
-//                        cout << inside_packet->id() << " (" << inside_packet->sequence() << ") | " << packet.humanType();
-//                        cout << " | " << socket.address();
-//                        cout << " | " << fixed << ((float)time / 1000) << "ms";
                     } else if (packet.type() == ICMP_ECHOREPLY) {
-
-                        if ((packet.id() == icmpid) && (packet.sequence() > (sequence - 3)) && (packet.sequence() <= sequence)) {
-                            // Calculate elapsed time
-                            start = starts[packet.sequence() - 1];
-                            time = (int)((end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec));
-                            times[packet.sequence() - 1] = time;
-                            
-                            sum += (float)time / 1000;
-                            
-                            // Get the address
-                            addresses.insert(socket.address());
-                        } else {
-                            i--;
-                        }
-
-//                        cout << packet.id() << " (" << packet.sequence() << ") | " << packet.humanType();
-//                        cout << " | " << socket.address();
-//                        cout << " | " << fixed << ((float)time / 1000) << "ms";
-
-                        running = false;
-                    } else {
-//                        cout << "??? (trying again)";
-                        i--;
+                        received = true;
+                        received_id = packet.id();
+                        received_seq = packet.sequence();
                     }
                     
-//                    cout << endl;
-                    
+                    if (received) {
+                        if ((received_id == icmpid) && (received_seq > (sequence - 3)) && (received_seq <= sequence)) {
+                            // Calculate elapsed time
+                            start = starts[received_seq - 1];
+                            time = (int)((end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec));
+                            
+                            sum += (float)time / 1000;
+                            
+                            // Get the address
+                            addresses.insert(socket.address());
+                            
+                            // Stop on valid echo reply
+                            if (packet.type() == ICMP_ECHOREPLY) {
+                                running = false;
+                            }
+                        } else {
+                            // This packet is weird, try receiving another one
+                            i--;
+                        }
+                    } else {
+                        i--;
+                    }
                 } else {
-                    // Timeout :/
-                    times[sequence - 2 + i] = -1;
-                    
-//                    cout << "  *  Timeout" << endl;
                     isTimeout = true;
                 }
                 selector.clear();
             }
             
-            // Post-processing
-            for (set<string>::iterator it = addresses.begin(); it != addresses.end(); it++) {
-                cout << " " << *it;
+            // Write the output
+            set<string>::iterator it = addresses.begin();
+            if (it != addresses.end()) {
+                cout << setw(15) << left << *it;
+                it++;
             }
-            cout << " ";
+            for (; it != addresses.end(); it++) {
+                cout << endl << "    ";
+                cout << setw(15) << left << *it;
+            }
             
-            if (isTimeout) {
-                cout << "???";
+            if (sum == 0) {
+                cout << "*";
+            } else if (isTimeout) {
+                cout << " - ???";
             } else {
-                cout << (sum / 3) << "ms";
+                cout << " - " << setprecision(4) << (sum / 3) << " ms";
             }
             cout << endl;
         }
