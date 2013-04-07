@@ -16,7 +16,7 @@ ICMPSocket::ICMPSocket() {
     }
 }
 
-void ICMPSocket::send(const Packet& packet, std::string address) {
+void ICMPSocket::send(const Packet&, std::string) {
     throw "Attempted to send a non-ICMP packet through a ICMP socket";
 }
 

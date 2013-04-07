@@ -32,8 +32,8 @@ public:
     
     ICMPPacket();
     ICMPPacket(int id, int seq);
-    ICMPPacket(icmp packet): packet(packet), Packet() {}
-    ICMPPacket(icmp packet, Data data): packet(packet), Packet(data) {}
+    ICMPPacket(icmp packet): Packet(), packet(packet) {}
+    ICMPPacket(icmp packet, Data data): Packet(data), packet(packet) {}
     
     void echo();
     

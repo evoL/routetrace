@@ -36,7 +36,7 @@ void Socket::send(const Packet& packet, std::string address) {
     // Append the data to the header
     data.insert(data.end(), packet.data().begin(), packet.data().end());
     
-    if (sendto(fd, &data[0], data.size(), 0, (sockaddr*)(&address_struct), sizeof(address_struct)) != data.size()) {
+    if ((Packet::Data::size_type)(sendto(fd, &data[0], data.size(), 0, (sockaddr*)(&address_struct), sizeof(address_struct))) != data.size()) {
         throw SocketException("Could not send the packet");
     }
 }

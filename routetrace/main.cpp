@@ -45,8 +45,6 @@ int main(int argc, const char * argv[]) {
         int sequence = 0;
         bool running = true;
         
-        cout << "Tracing route to " << target_ip << ", " << MAXHOPS << " hops max" << endl;
-        
         for (int ttl = 1; running && (ttl <= MAXHOPS); ttl++) {
             cout << setw(2) << right << ttl << "  ";
             cout.flush();

@@ -9,7 +9,7 @@
 #include "IPPacket.h"
 #include "ICMPPacket.h"
 
-IPPacket::IPPacket(ip packet, Data data): packet(packet), Packet(data) {
+IPPacket::IPPacket(ip packet, Data data): Packet(data), packet(packet) {
     payloadPacket = createPayload();
 }
 

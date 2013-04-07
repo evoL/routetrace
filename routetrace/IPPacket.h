@@ -18,7 +18,7 @@ class IPPacket : public Packet {
     Packet* payloadPacket;
 public:
     IPPacket();
-    IPPacket(ip packet): packet(packet), Packet() {}
+    IPPacket(ip packet): Packet(), packet(packet) {}
     IPPacket(ip packet, Data data);
     virtual ~IPPacket();
     
