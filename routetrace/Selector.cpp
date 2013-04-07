@@ -10,6 +10,7 @@ Selector::Selector() {
     
     timeoutValue.tv_sec = 0;
     timeoutValue.tv_usec = 0;
+    timeoutSeconds = 0;
     waitInfinitely = false;
     maxFd = -1;
 }
@@ -41,13 +42,23 @@ void Selector::clear() {
 
 void Selector::timeout(time_t sec) {
     waitInfinitely = false;
-    timeoutValue.tv_sec = sec;
+    timeoutSeconds = sec;
 }
 
 bool Selector::run() {
     int result;
     
-    if ((result = select(maxFd + 1, &readSet, &writeSet, NULL, &timeoutValue)) < 0) {
+    // Enable infinite timeout
+    timeval *timeoutPointer;
+    if (waitInfinitely) {
+        timeoutPointer = NULL;
+    } else {
+        timeoutValue.tv_sec = timeoutSeconds;
+        timeoutValue.tv_usec = 0;
+        timeoutPointer = &timeoutValue;
+    }
+    
+    if ((result = select(maxFd + 1, &readSet, &writeSet, NULL, timeoutPointer)) < 0) {
         throw SocketException("Selector error");
     }
     

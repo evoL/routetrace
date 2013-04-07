@@ -28,6 +28,7 @@ public:
 private:
     Set reads, writes;
     timeval timeoutValue;
+    time_t timeoutSeconds;
     bool waitInfinitely;
     int maxFd;
     
