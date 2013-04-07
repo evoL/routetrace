@@ -6,6 +6,7 @@
 #include <netinet/in.h>
 #include <netinet/ip.h>
 #include <string>
+#include <cstring>
 #include <stdexcept>
 #include <errno.h>
 #include "Packet.h"
