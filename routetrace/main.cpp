@@ -27,12 +27,12 @@ int main(int argc, const char * argv[]) {
     try {
         ICMPSocket socket;
         Selector selector;
-        selector.timeout(1);
         
         vector<timeval> starts;
         set<string> addresses;
-        timeval start;
+        timeval start, end;
         float sum;
+        int time;
         bool isTimeout;
         
         int icmpid = getpid() & 0xffff;
@@ -58,17 +58,18 @@ int main(int argc, const char * argv[]) {
             sum = 0;
             isTimeout = false;
             addresses.clear();
+            selector.timeout(1);
             
             // Try to read 3 packets
             for (int i = 0; i < 3; i++) {                
                 selector.read(socket);
+                
                 if (selector.run()) {
                     ICMPPacket packet = socket.receive();
                     
-                    timeval end;
                     gettimeofday(&end, NULL);
+                    time = (int)((end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec));
                     
-                    int time;
                     int received_id, received_seq;
                     bool received = false;
                     
@@ -90,7 +91,6 @@ int main(int argc, const char * argv[]) {
                         if ((received_id == icmpid) && (received_seq > (sequence - 3)) && (received_seq <= sequence)) {
                             // Calculate elapsed time
                             start = starts[received_seq - 1];
-                            time = (int)((end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec));
                             
                             sum += (float)time / 1000;
                             
@@ -109,8 +109,20 @@ int main(int argc, const char * argv[]) {
                         i--;
                     }
                 } else {
+                    gettimeofday(&end, NULL);
+                    time = (int)((end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec));
+                    
                     isTimeout = true;
                 }
+                
+                // Decrement the timeout
+                long timeout = selector.timeoutInMicroseconds() - time;
+                if (timeout > 0) {
+                    selector.timeout(timeout / 1000000, timeout % 1000000);
+                } else {
+                    selector.timeout(0);
+                }
+                
                 selector.clear();
             }
             

@@ -40,9 +40,10 @@ void Selector::clear() {
     maxFd = -1;
 }
 
-void Selector::timeout(time_t sec) {
+void Selector::timeout(time_t sec, suseconds_t usec) {
     waitInfinitely = false;
     timeoutSeconds = sec;
+    timeoutUs = usec;
 }
 
 bool Selector::run() {
@@ -54,7 +55,7 @@ bool Selector::run() {
         timeoutPointer = NULL;
     } else {
         timeoutValue.tv_sec = timeoutSeconds;
-        timeoutValue.tv_usec = 0;
+        timeoutValue.tv_usec = timeoutUs;
         timeoutPointer = &timeoutValue;
     }
     

@@ -18,7 +18,9 @@ public:
     void write(const Socket& s);
     void clear();
     
-    void timeout(time_t sec);
+    inline long timeoutInMicroseconds() { return timeoutSeconds * 1000000 + timeoutUs; }
+    
+    void timeout(time_t sec, suseconds_t usec = 0);
     inline void infinite(bool inf = true) { waitInfinitely = inf; }
     
     inline const Set& availableToRead() const { return reads; }
@@ -29,6 +31,7 @@ private:
     Set reads, writes;
     timeval timeoutValue;
     time_t timeoutSeconds;
+    suseconds_t timeoutUs;
     bool waitInfinitely;
     int maxFd;
     
